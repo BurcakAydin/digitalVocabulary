@@ -1,0 +1,598 @@
+openapi: 3.0.3
+info:
+  title: Digital Vocabulary API
+  version: 1.0.0
+  description: Provides the infrastructure for users to create and practice their
+    own vocabularies.
+paths:
+  /api/exercises/question/:
+    get:
+      operationId: exercises_question_retrieve
+      tags:
+      - exercises
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/profiles/follow/{username}/:
+    post:
+      operationId: profiles_follow_create
+      parameters:
+      - in: path
+        name: username
+        schema:
+          type: string
+        required: true
+      tags:
+      - profiles
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/profiles/followed-list/:
+    get:
+      operationId: profiles_followed_list_list
+      tags:
+      - profiles
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Profile'
+          description: ''
+  /api/profiles/register/:
+    post:
+      operationId: profiles_register_create
+      tags:
+      - profiles
+      security:
+      - jwtAuth: []
+      - {}
+      responses:
+        '200':
+          description: No response body
+  /api/profiles/search/:
+    get:
+      operationId: profiles_search_list
+      tags:
+      - profiles
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Profile'
+          description: ''
+  /api/profiles/token/:
+    post:
+      operationId: profiles_token_create
+      description: |-
+        Takes a set of user credentials and returns an access and refresh JSON web
+        token pair to prove the authentication of those credentials.
+      tags:
+      - profiles
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenObtainPair'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenObtainPair'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenObtainPair'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenObtainPair'
+          description: ''
+  /api/profiles/token/refresh/:
+    post:
+      operationId: profiles_token_refresh_create
+      description: |-
+        Takes a refresh type JSON web token and returns an access type JSON web
+        token if the refresh token is valid.
+      tags:
+      - profiles
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TokenRefresh'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenRefresh'
+          description: ''
+  /api/profiles/unfollow/{username}/:
+    post:
+      operationId: profiles_unfollow_create
+      parameters:
+      - in: path
+        name: username
+        schema:
+          type: string
+        required: true
+      tags:
+      - profiles
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/vocabularies/:
+    get:
+      operationId: vocabularies_list
+      tags:
+      - vocabularies
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Vocabulary'
+          description: ''
+    post:
+      operationId: vocabularies_create
+      tags:
+      - vocabularies
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Vocabulary'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Vocabulary'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Vocabulary'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vocabulary'
+          description: ''
+  /api/vocabularies/{id}/:
+    get:
+      operationId: vocabularies_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - vocabularies
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vocabulary'
+          description: ''
+    put:
+      operationId: vocabularies_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - vocabularies
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Vocabulary'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Vocabulary'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Vocabulary'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vocabulary'
+          description: ''
+    patch:
+      operationId: vocabularies_partial_update
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - vocabularies
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedVocabulary'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedVocabulary'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedVocabulary'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Vocabulary'
+          description: ''
+    delete:
+      operationId: vocabularies_destroy
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - vocabularies
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+  /api/vocabularies/{vocabulary_id}/copy/:
+    post:
+      operationId: vocabularies_copy_create
+      parameters:
+      - in: path
+        name: vocabulary_id
+        schema:
+          type: string
+        required: true
+      tags:
+      - vocabularies
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          description: No response body
+  /api/vocabularies/{vocabulary_id}/words/:
+    get:
+      operationId: vocabularies_words_list
+      parameters:
+      - in: path
+        name: vocabulary_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - vocabularies
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Word'
+          description: ''
+    post:
+      operationId: vocabularies_words_create
+      parameters:
+      - in: path
+        name: vocabulary_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - vocabularies
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Word'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Word'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Word'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Word'
+          description: ''
+  /api/vocabularies/{vocabulary_id}/words/{word_id}/:
+    get:
+      operationId: vocabularies_words_retrieve
+      parameters:
+      - in: path
+        name: vocabulary_id
+        schema:
+          type: integer
+        required: true
+      - in: path
+        name: word_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - vocabularies
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Word'
+          description: ''
+    put:
+      operationId: vocabularies_words_update
+      parameters:
+      - in: path
+        name: vocabulary_id
+        schema:
+          type: integer
+        required: true
+      - in: path
+        name: word_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - vocabularies
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Word'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/Word'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/Word'
+        required: true
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Word'
+          description: ''
+    patch:
+      operationId: vocabularies_words_partial_update
+      parameters:
+      - in: path
+        name: vocabulary_id
+        schema:
+          type: integer
+        required: true
+      - in: path
+        name: word_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - vocabularies
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PatchedWord'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PatchedWord'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PatchedWord'
+      security:
+      - jwtAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Word'
+          description: ''
+    delete:
+      operationId: vocabularies_words_destroy
+      parameters:
+      - in: path
+        name: vocabulary_id
+        schema:
+          type: integer
+        required: true
+      - in: path
+        name: word_id
+        schema:
+          type: integer
+        required: true
+      tags:
+      - vocabularies
+      security:
+      - jwtAuth: []
+      responses:
+        '204':
+          description: No response body
+components:
+  schemas:
+    PatchedVocabulary:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 100
+        description:
+          type: string
+    PatchedWord:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        vocabulary:
+          type: integer
+          readOnly: true
+        text:
+          type: string
+          maxLength: 100
+        meaning:
+          type: string
+          maxLength: 100
+        example_sentence:
+          type: string
+    Profile:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        user:
+          $ref: '#/components/schemas/User'
+      required:
+      - id
+      - user
+    TokenObtainPair:
+      type: object
+      properties:
+        username:
+          type: string
+          writeOnly: true
+        password:
+          type: string
+          writeOnly: true
+        access:
+          type: string
+          readOnly: true
+        refresh:
+          type: string
+          readOnly: true
+      required:
+      - access
+      - password
+      - refresh
+      - username
+    TokenRefresh:
+      type: object
+      properties:
+        access:
+          type: string
+          readOnly: true
+        refresh:
+          type: string
+          writeOnly: true
+      required:
+      - access
+      - refresh
+    User:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        username:
+          type: string
+          description: Required. 150 characters or fewer. Letters, digits and @/./+/-/_
+            only.
+          pattern: ^[\w.@+-]+$
+          maxLength: 150
+      required:
+      - id
+      - username
+    Vocabulary:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        name:
+          type: string
+          maxLength: 100
+        description:
+          type: string
+      required:
+      - id
+      - name
+    Word:
+      type: object
+      properties:
+        id:
+          type: integer
+          readOnly: true
+        vocabulary:
+          type: integer
+          readOnly: true
+        text:
+          type: string
+          maxLength: 100
+        meaning:
+          type: string
+          maxLength: 100
+        example_sentence:
+          type: string
+      required:
+      - example_sentence
+      - id
+      - meaning
+      - text
+      - vocabulary
+  securitySchemes:
+    jwtAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

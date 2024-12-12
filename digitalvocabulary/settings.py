@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "profiles",
     "vocabularies",
     "exercises",
+    "drf_spectacular",
 
     "rest_framework",
     "rest_framework_simplejwt",
@@ -142,13 +143,22 @@ AUTH_USER_MODEL = 'profiles.CustomUser'
 REST_FRAMEWORK = {
 
     'DEFAULT_AUTHENTICATION_CLASSES': ('rest_framework_simplejwt.authentication.JWTAuthentication',),
-    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAuthenticated',)
+    'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAuthenticated',),
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 
 }
-
 
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(days=30),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=35),
     }
+
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Digital Vocabulary API',
+    'DESCRIPTION': 'Provides the infrastructure for users to create and practice their own vocabularies.',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+   
+}
