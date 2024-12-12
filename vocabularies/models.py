@@ -12,7 +12,7 @@ class Vocabulary(models.Model):
     
 
 class Word(models.Model):
-    dictionary = models.ForeignKey(Vocabulary, on_delete=models.CASCADE, related_name='words')
+    vocabulary = models.ForeignKey(Vocabulary, on_delete=models.CASCADE, related_name='words')
     text = models.CharField(max_length=100)
     meaning = models.CharField(max_length=100)
     example_sentence = models.CharField()
